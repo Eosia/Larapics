@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\{
     Album,
     Category,
+    Tag,
 };
 use Illuminate\Http\Request;
 use App\Http\Requests\AlbumRequest;
@@ -72,17 +73,16 @@ class AlbumController extends Controller
                 $album->categories()->attach($category->id);
             }
 
-            // $tags = explode(',', $request->tags);
+            $tags = explode(',', $request->tags);
 
-            // $tags = collect($tags)->filter(function($value, $key){
-            //     return $value != ' ';
-            // })->all();
+            $tags = collect($tags)->filter(function($value, $key){
+                return $value != ' ';
+            })->all();
 
-            // foreach($tags as $t){
-            //     $tag = Tag::firstOrCreate(['name' => trim($t)]);
-            //     $album->tags()->attach($tag->id);
-            // }
-
+            foreach($tags as $t){
+                $tag = Tag::firstOrCreate(['name' => trim($t)]);
+                $album->tags()->attach($tag->id);
+            }
             
             //dd($categories);
         }
