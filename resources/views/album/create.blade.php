@@ -51,7 +51,6 @@
                                         @enderror
                                     </div>
 
-
                                     <div class="form-group">
                                         <label for="tags">Tags séprarés par des virgules</label>
                                         <input type="text" name="tags" value="{{ old('tags') }}" placeholder="lac, tigre, avion" class="form-control">
@@ -59,7 +58,6 @@
                                         <div class="error">{{ $message }}</div>
                                         @enderror
                                     </div> 
-
 
                                     <div class="card-footer text-right">
                                         <button class="btn btn-primary mr-1" type="submit">Submit</button>
