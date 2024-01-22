@@ -13,6 +13,8 @@ class Photo extends Model
 {
     use HasFactory, HasSlug;
 
+    protected $fillable = ['title', 'album_id'];
+
     protected $perPage = 9;
 
     public static function boot() {
