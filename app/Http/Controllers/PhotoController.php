@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\PhotoRequest;
 
-use Intervention\Image\ImageManager as Image;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
+
 
 use App\Models\{
     Album,
@@ -18,6 +20,7 @@ use App\Models\{
 use DB, Storage, Str, Mail;
 use Dotenv\Exception\ValidationException;
 
+$manager = new ImageManager(new Driver());
 class PhotoController extends Controller
 {
     // ajout de photo à un album
@@ -37,6 +40,7 @@ class PhotoController extends Controller
     public function store(PhotoRequest $request, Album $album) {
         abort_if($album->user_id !== auth()->id(), 403);
         DB::beginTransaction();
+        //$manager = new ImageManager(new Driver());
 
         try {
             $photo = $album->photos()->create($request->validated());
@@ -56,14 +60,9 @@ class PhotoController extends Controller
                 $filename = Str::uuid() . '.' . $ext;
 
                 $originalPath = $request->file('photo')->storeAs('photos/' . $photo->album_id, $filename);
-                $originalWidth = (int) Image::make($request->file('photo'))->width();
-                $originalHeight = (int) 
+                $originalWidth = (int) \Image::read($request->file('photo'))->width();
+                $originalHeight = (int) \Image::read($request->file('photo'))->height();
                 
-                
-                
-                
-                
-                Image::make($request->file('photo'))->height();
 
                 $originalSource = $photo->sources()->create([
                     'path' => $originalPath,
