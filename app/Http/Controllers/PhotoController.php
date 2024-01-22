@@ -12,7 +12,6 @@ use Dotenv\Exception\ValidationException;
 
 class PhotoController extends Controller
 {
-    // Ajout de photo à un album
     public function create(Album $album) {
         abort_if($album->user_id !== auth()->id(), 403);
 
@@ -65,22 +64,38 @@ class PhotoController extends Controller
                     $constraint->upsize();
                 });
 
-                // Choisissez la méthode d'encodage en fonction de l'extension
-                $encodedThumbnail = match ($ext) {
-                    'png' => $thumbnailImage->toPng(),
-                    'gif' => $thumbnailImage->toGif(),
-                    'bmp' => $thumbnailImage->toBitmap(),
-                    'webp' => $thumbnailImage->toWebp(),
-                    'avif' => $thumbnailImage->toAvif(),
-                    default => $thumbnailImage->toJpeg(),
-                };
-
+                // Encode the thumbnail
+                $encodedThumbnail = $this->encodeImage($thumbnailImage, $ext);
                 $thumbnailPath = 'photos/'.$album->album_id.'/thumbnails/'.$filename;
                 Storage::put($thumbnailPath, (string) $encodedThumbnail);
 
                 $photo->thumbnail_path = $thumbnailPath;
                 $photo->thumbnail_url = Storage::url($thumbnailPath);
                 $photo->save();
+
+                for($i = 2; $i <= 6; $i++) {
+                    $width = (int) round($originalWidth / $i);
+                    $height = (int) round($originalHeight / $i);
+
+                    $img = $manager->read(Storage::get($originalPath))->resize($width, $height, function($constraint) {
+                        $constraint->aspectRatioCrop();
+                        $constraint->upsize();
+                    });
+
+                    // Encode the resized image
+                    $encodedImage = $this->encodeImage($img, $ext);
+                    $newFilename = Str::uuid().'.'.$ext;
+                    $path = 'photos/'.$album->album_id.'/'.$newFilename;
+                    Storage::put($path, (string) $encodedImage);
+
+                    $photo->sources()->create([
+                        'path' => $path,
+                        'url' => Storage::url($path),
+                        'size' => Storage::size($path),
+                        'width' => $width,
+                        'height' => $height,
+                    ]);
+                }
             }
         } catch(ValidationException $e) {
             DB::rollBack();
@@ -93,5 +108,16 @@ class PhotoController extends Controller
         $redirect = route('photos.create', [$album->slug]);
 
         return redirect($redirect)->withSuccess($success);
+    }
+
+    private function encodeImage($image, $ext) {
+        return match ($ext) {
+            'png' => $image->toPng(),
+            'gif' => $image->toGif(),
+            'bmp' => $image->toBitmap(),
+            'webp' => $image->toWebp(),
+            'avif' => $image->toAvif(),
+            default => $image->toJpeg(),
+        };
     }
 }
