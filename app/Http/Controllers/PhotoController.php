@@ -78,4 +78,23 @@ class PhotoController extends Controller
         return redirect($redirect)->withSuccess($success);
     }
 
+    public function show(Photo $photo) {
+        $photo->load('tags:name,slug', 'album.tags:name,slug', 'album.categories:name,slug', 'sources');
+        
+        $tags = collect($photo->tags)->merge(collect($photo->album->tags))->unique();
+
+        $categories = $photo->album->categories;
+
+        $data = [
+            'title' => $photo->title.' - '.config('app.name'),
+            'description' => $photo->title.'.  '.$tags->implode('name', ',').' '.$categories->implode('name', ', '),
+            'photo' => $photo,
+            'tags' => $tags,
+            'categories' => $categories,
+            'heading' => $photo->title,
+        ];
+        return view('photo.show', $data);
+
+    }
+
 }

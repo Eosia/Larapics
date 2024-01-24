@@ -25,6 +25,8 @@ Route::get('/', HomeController::class)->name('home');
 
 Route::resource('albums', AlbumController::class);
 
+Route::get('photo/{photo}', [PhotoController::class, 'show'])->name('photos.show');
+
 Route::middleware(['auth', 'verified'])->group(function() {
 
     Route::get('photos/create/{album}', [PhotoController::class, 'create'])->name('photos.create');

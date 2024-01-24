@@ -9,13 +9,6 @@
             <h1>
               {{ $heading }}
             </h1>
-            {{-- 
-              <div class="section-header-breadcrumb">
-              <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
-              <div class="breadcrumb-item"><a href="#">Components</a></div>
-              <div class="breadcrumb-item">Article</div>
-            </div> 
-            --}}
           </div>
 
           <div class="section-body">
@@ -29,7 +22,7 @@
                 <article class="article article-style-c">
                   <div class="article-header">
                     <div class="article-image">
-                      <a href="">
+                      <a href="{{ route('photos.show', [$photo->slug]) }}">
                         <img src="{{ $photo->thumbnail_url }}" alt="{{ $photo->title }}"
                         width="350" height="233"
                       >
@@ -41,7 +34,7 @@
                       <a href="#">Posté {{ $photo->created_at->diffForHumans() }}</a></div>
                     <div class="article-title">
                       <h2>
-                        <a href="#">
+                        <a href="{{ route('photos.show', [$photo->slug]) }}">
                           {{ $photo->title }}
                         </a>
                       </h2>
