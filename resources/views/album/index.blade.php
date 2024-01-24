@@ -55,13 +55,36 @@
                         </a>
                       </h2>
                     </div>
-                    <p>Duis aute irure dolor in reprehenderit in voluptate velit esse
-                    cillum dolore eu fugiat nulla pariatur. </p>
+
                     <div class="article-user">
                       
                       <div class="article-user-details">
 
                         <div class="text-job">
+
+                          @if(Auth::user()->id === $album->user_id)
+
+                          <div class="destroy text-right">
+
+                              <a href="{{ route('photos.create', [$album->slug]) }}"><i class="fas fa-plus btn btn-info" style="font-size: 1.5rem;"></i></a>
+
+                              &nbsp;
+
+                              <a href="{{ route('albums.edit', [$album->slug]) }}"><i class="fas fa-edit btn btn-warning" style="font-size: 1.5rem;"></i></a>
+
+                              &nbsp;
+{{-- 
+                              <form style="display: inline;" action="{{ route('albums.destroy', [$album->slug]) }}" method="post" class="destroy">
+                                  @csrf
+                                  @method('DELETE')
+                                  <button class="btn btn-danger" type="submit">
+                                      <i class="far fa-trash-alt" style="color: #fff;"></i>
+                                  </button>
+                              </form> --}}
+
+                          </div>
+
+                      @endif
                           
                         </div>
                       </div>
