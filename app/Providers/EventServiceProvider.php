@@ -30,7 +30,7 @@ class EventServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //
-        Photo::observe(PhotoObserver::class);
+        
     }
 
     /**

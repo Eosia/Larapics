@@ -3,6 +3,10 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Models\{
+    Photo,
+};
+use App\Observers\PhotoObserver;
 
 class ObserverServiceProvider extends ServiceProvider
 {
@@ -20,5 +24,6 @@ class ObserverServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //
+        Photo::observe(PhotoObserver::class);
     }
 }
