@@ -9,6 +9,7 @@ use Intervention\Image\Drivers\Gd\Driver;
 use App\Models\{ Album, Photo, User, Source, Tag };
 use DB, Storage, Str, Mail;
 use Dotenv\Exception\ValidationException;
+use App\Jobs\ResizePhoto;
 
 class PhotoController extends Controller
 {
@@ -59,43 +60,10 @@ class PhotoController extends Controller
                     'height' => $originalHeight,
                 ]);
 
-                $thumbnailImage = $image->resize(350, 233, function($constraint) {
-                    $constraint->aspectRatioCrop();
-                    $constraint->upsize();
-                });
+                // resize photo job
+                // ResizePhoto::dispatch($originalSource, $photo, $ext);
+                DB::afterCommit(fn() => ResizePhoto::dispatch($originalSource, $photo, $ext));
 
-                // Encode the thumbnail
-                $encodedThumbnail = $this->encodeImage($thumbnailImage, $ext);
-                $thumbnailPath = 'photos/'.$album->album_id.'/thumbnails/'.$filename;
-                Storage::put($thumbnailPath, (string) $encodedThumbnail);
-
-                $photo->thumbnail_path = $thumbnailPath;
-                $photo->thumbnail_url = Storage::url($thumbnailPath);
-                $photo->save();
-
-                for($i = 2; $i <= 6; $i++) {
-                    $width = (int) round($originalWidth / $i);
-                    $height = (int) round($originalHeight / $i);
-
-                    $img = $manager->read(Storage::get($originalPath))->resize($width, $height, function($constraint) {
-                        $constraint->aspectRatioCrop();
-                        $constraint->upsize();
-                    });
-
-                    // Encode the resized image
-                    $encodedImage = $this->encodeImage($img, $ext);
-                    $newFilename = Str::uuid().'.'.$ext;
-                    $path = 'photos/'.$album->album_id.'/'.$newFilename;
-                    Storage::put($path, (string) $encodedImage);
-
-                    $photo->sources()->create([
-                        'path' => $path,
-                        'url' => Storage::url($path),
-                        'size' => Storage::size($path),
-                        'width' => $width,
-                        'height' => $height,
-                    ]);
-                }
             }
         } catch(ValidationException $e) {
             DB::rollBack();
@@ -110,14 +78,4 @@ class PhotoController extends Controller
         return redirect($redirect)->withSuccess($success);
     }
 
-    private function encodeImage($image, $ext) {
-        return match ($ext) {
-            'png' => $image->toPng(),
-            'gif' => $image->toGif(),
-            'bmp' => $image->toBitmap(),
-            'webp' => $image->toWebp(),
-            'avif' => $image->toAvif(),
-            default => $image->toJpeg(),
-        };
-    }
 }
