@@ -71,8 +71,8 @@
 
                                                         <option value="{{ $source->id }}" @if(old('source') == $source->id)
                                                         selected @endif>
-                                                        {{ $source->width }} X {{ $source->height }}
-                                                            {{-- {{ $source->dimensions }} --}} - {{ $source->convertToMo($source->size) }}
+                                                        {{-- {{ $source->width }} X {{ $source->height }} --}}
+                                                            {{ $source->dimensions }} - {{ $source->convertToMo($source->size) }}
                                                         </option>
                                                     @endforeach
                                                 </select>
