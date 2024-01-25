@@ -61,19 +61,21 @@
                                 @endif
 
                                 <div>
-                                    {{-- <form action="{{ route('photos.download') }}" method="post">
+                                    <form action="{{ route('photos.download') }}" method="post">
                                         @csrf
                                         <div class="form-group">
                                             <div class="input-group">
-                                                <select class="custom-select" name="source"> --}}
+                                                <select class="custom-select" name="source"> 
                                                     {{-- <option value=""></option> --}}
-                                                    {{-- @foreach($photo->sources as $source)
+                                                        @foreach($photo->sources as $source)
+
                                                         <option value="{{ $source->id }}" @if(old('source') == $source->id)
                                                         selected @endif>
-                                                            {{ $source->dimensions }} - {{ $source->convertToMo($source->size) }}
+                                                        {{ $source->width }} X {{ $source->height }}
+                                                            {{-- {{ $source->dimensions }} --}} - {{ $source->convertToMo($source->size) }}
                                                         </option>
-                                                    @endforeach --}}
-                                                {{-- </select>
+                                                    @endforeach
+                                                </select>
                                                 @error('source')
                                                 <div class="error">{{ $message }}</div>
                                                 @enderror
@@ -82,7 +84,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </form> --}}
+                                    </form>
                                 </div>
 
                                 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
