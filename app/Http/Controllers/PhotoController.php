@@ -10,6 +10,7 @@ use App\Models\{ Album, Photo, User, Source, Tag };
 use DB, Storage, Str, Mail;
 use Dotenv\Exception\ValidationException;
 use App\Jobs\ResizePhoto;
+use App\Notifications\PhotoDownloaded;
 
 class PhotoController extends Controller
 {
@@ -105,11 +106,11 @@ class PhotoController extends Controller
         $source->load('photo.album.user');
         abort_if(! $source->photo->active, 403);
 
-        // if(auth()->id() !== $source->photo->album->user_id){
-        //     $source->photo->album->user->notify(new PhotoDownloaded($source, $source->photo, auth()->user()));
+        if(auth()->id() !== $source->photo->album->user_id){
+            $source->photo->album->user->notify(new PhotoDownloaded($source, $source->photo, auth()->user()));
 
-        //     Mail::to(auth()->user())->send(new MailPhoto($source, auth()->user()));
-        // }
+            // Mail::to(auth()->user())->send(new MailPhoto($source, auth()->user()));
+        }
 
         // $download = $source->photo->downloads()->create([
         //     'user_id' => auth()->id(),
