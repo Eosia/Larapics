@@ -127,14 +127,15 @@
             </li>
             --}}
             @if(count(Auth::user()->unreadNotifications))
-            <li class="dropdown dropdown-list-toggle mt-3 mx-5"><a href="#" data-toggle="dropdown" class="nav-link notification-toggle nav-link-lg beep"><i class="far fa-bell"></i></a>
+            <li class="dropdown dropdown-list-toggle mt-3 mx-5"><a href="#" data-toggle="dropdown" class="nav-link notification-toggle nav-link-lg beep">
+              <i class="far fa-bell"></i></a>
                 <div class="dropdown-menu dropdown-list dropdown-menu-right">
-                    {{-- <div class="dropdown-header">Notifications
+                    <div class="dropdown-header">Notifications
                         <div class="float-right">
                             <a href="{{ route('notifications.read') }}">Marquer comme lues</a>
                         </div>
-                    </div> --}}
-                    <div class="dropdown-list-content dropdown-list-icons ml-5">
+                    </div>
+                    <div class="dropdown-list-content dropdown-list-icons">
                         @foreach(Auth::user()->unreadNotifications as $notification)
                         <a href="#" class="dropdown-item dropdown-item-unread">
                             <div class="dropdown-item-icon bg-primary text-white">

@@ -29,6 +29,8 @@ Route::get('photo/{photo}', [PhotoController::class, 'show'])->name('photos.show
 
 Route::post('download', [PhotoController::class, 'download'])->name('photos.download')->middleware('auth', 'verified');
 
+Route::get('read-all', [PhotoController::class, 'readAll'])->name('notifications.read')->middleware('auth', 'verified');
+
 Route::middleware(['auth', 'verified'])->group(function() {
 
     Route::get('photos/create/{album}', [PhotoController::class, 'create'])->name('photos.create');
