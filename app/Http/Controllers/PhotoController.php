@@ -77,7 +77,9 @@ class PhotoController extends Controller
         $success = 'Photo ajoutée';
         $redirect = route('photos.create', [$album->slug]);
 
-        return redirect($redirect)->withSuccess($success);
+        return request()->ajax() 
+        ? response()->json(['success' =>$success, 'redirect' => $redirect])
+        : redirect($redirect)->withSuccess($success);
     }
 
     public function show(Photo $photo) {

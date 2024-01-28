@@ -43,7 +43,7 @@
                                         @enderror
                                     </div>
 
-                                    <div style="display: none;" class="progress" id="progress">
+                                    <div style="display: block;" class="progress" id="progress">
                                         <div id="progressbar" class="progress-bar" role="progressbar" style="width: 0%;">0%</div>
                                     </div>
 

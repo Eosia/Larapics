@@ -49,3 +49,4 @@ class PhotoDownloaded extends Mailable implements ShouldQueue
         ];
     }
 }
+ 
