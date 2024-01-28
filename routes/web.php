@@ -31,6 +31,8 @@ Route::post('download', [PhotoController::class, 'download'])->name('photos.down
 
 Route::get('read-all', [PhotoController::class, 'readAll'])->name('notifications.read')->middleware('auth', 'verified');
 
+Route::get('vote/{photo}/{vote}/{token}', [PhotoController::class, 'vote'])->name('photo.vote');
+
 Route::middleware(['auth', 'verified'])->group(function() {
 
     Route::get('photos/create/{album}', [PhotoController::class, 'create'])->name('photos.create');

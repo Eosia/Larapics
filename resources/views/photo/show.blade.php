@@ -35,7 +35,7 @@
                                 </h4>
 
 
-                                {{-- <span class="text-right">
+                    <span class="text-right">
                       <a class="vote" href="{{ route('photo.vote', ['photo' => $photo->slug, 'vote' =>'like', 'token' => Session::token()]) }}">
                         <i class="far fa-thumbs-up"></i> {{ $photo->count_likes }}
                       </a>
@@ -45,7 +45,7 @@
                       <a class="vote" href="{{ route('photo.vote', ['photo' => $photo->slug, 'vote' =>'dislike', 'token' => Session::token()]) }}">
                         <i class="far fa-thumbs-down"></i> {{ $photo->count_dislikes }}
                       </a>
-                    </span> --}}
+                    </span>
 
                     </div>
 

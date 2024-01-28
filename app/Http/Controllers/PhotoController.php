@@ -84,6 +84,12 @@ class PhotoController extends Controller
 
     public function show(Photo $photo) {
         $photo->load('tags:name,slug', 'album.tags:name,slug', 'album.categories:name,slug', 'sources');
+
+        $photo->loadCount(['votes as count_likes' => function($query){
+            return $query->where('like', true);
+        }, 'votes as count_dislikes' => function($query){
+            return $query->where('dislike', true);
+        }]);
         
         $tags = collect($photo->tags)->merge(collect($photo->album->tags))->unique();
 
@@ -105,6 +111,39 @@ class PhotoController extends Controller
     public function readAll() {
         auth()->user()->unreadNotifications->markAsRead();
         return back();
+    }
+
+    public function vote(Photo $photo, string $vote, string $token)
+    {
+        abort_if($token !== session()->token(), 403);
+
+        abort_unless(in_array($vote, ['like', 'dislike']), 403);
+
+        $photo->load('votes');
+
+        if($photo->votes->where('session_token', session()->token())->count()){
+            $error = 'Vous avez déja voté.';
+            return request()->ajax()
+                ? response()->json(['error'=>$error])
+                : back()->withError($error);
+        }
+
+        $like = $vote == 'like';
+        $dislike = $vote == 'dislike';
+
+        $success = $like ? 'Vous aimez cette photo.' : 'Vous n\'aimez pas cette photo.';
+
+        $vote = $photo->votes()->create([
+            'like' => $like,
+            'dislike' => $dislike,
+            'session_token' => session()->token(),
+        ]);
+
+        $redirect = route('photos.show', [$photo->slug]);
+
+        return request()->ajax()
+            ? response()->json(['success' => $success, 'redirect' => $redirect])
+            : back()->withSuccess($success);
     }
 
 

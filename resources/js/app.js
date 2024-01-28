@@ -22,6 +22,36 @@ $(document).ready(function () {
     let progress = $('#progress');
     let progressbar = $(progress).find('#progressbar');
     let withFile = $('form.withFile');
+    let vote = $('a.vote');
+
+
+    $(vote).each(function () {
+        $(this).on('click', (e) => {
+            e.preventDefault();
+            $.ajax({
+                url: $(this).attr('href'),
+                type: 'GET',
+                dataType: 'json',
+                success: (response) => {
+                    if (response.success) {
+                        let redirect = response.redirect || null;
+                        handleSuccess(response.success, redirect);
+                    }
+                    if (response.error) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Erreur !',
+                            html: response.error,
+                        })
+                    }
+                },
+                error: (xhr, status, err) => {
+                    handleErrors(xhr);
+                }
+            })
+        })
+    })
+
 
     $(withFile).each(function () {
         $(this).on('submit', function (e) {
