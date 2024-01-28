@@ -48,6 +48,7 @@
                           <a href="#">
                             {{ $photo->album->user->name }}
                           </a>
+                          {{ $photo->album->user->photos->count() }} {{ Str::plural('photo', $photo->album->user->photos->count()) }}
                         </div>
                         <div class="text-job">
                           <a href="">
