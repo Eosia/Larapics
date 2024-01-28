@@ -174,6 +174,37 @@ class PhotoController extends Controller
 
     }
 
+    public function destroy(Photo $photo)
+    {
+        $photo->load('sources', 'album');
+
+        abort_if($photo->album->user_id !== auth()->id(), 403);
+
+        DB::beginTransaction();
+
+        try{
+            DB::afterCommit(function() use ($photo){
+                foreach($photo->sources as $source){
+                    Storage::delete($source->path);
+                }
+                Storage::delete($photo->thumbnail_path);
+            });
+
+            $photo->delete();
+        }
+        catch(ValidationException $e){
+            DB::rollBack();
+            dd($e->getErrors());
+        }
+
+        DB::commit();
+
+        $success = 'Photo supprimée.';
+
+        return request()->ajax()
+            ? response()->json(['success' => $success, 'redirect' => url()->previous()])
+            : back()->withSuccess($success);
+    }
 
 
 }

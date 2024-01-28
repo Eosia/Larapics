@@ -57,6 +57,19 @@
                           {{ $photo->album->photos->count() }} 
                           {{ Str::plural('photo', $photo->album->photos->count()) }}
                         </div>
+
+                        @if(Auth::check() && Auth::id() === $photo->album->user_id)
+                          <div class="destroy text-right">
+                              <form action="{{ route('photos.destroy', [$photo->slug]) }}" method="post" class="destroy">
+                                  @csrf
+                                  @method('DELETE')
+                                  <button class="btn btn-danger" type="submit">
+                                      <i class="far fa-trash-alt" style="color: #fff; font-size: 1.5rem;"></i>
+                                  </button>
+                              </form>
+                          </div>
+                        @endif
+
                       </div>
                     </div>
                   </div>
