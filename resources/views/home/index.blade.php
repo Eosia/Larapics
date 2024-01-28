@@ -11,7 +11,10 @@
             </h1>
           </div>
 
-          <div class="section-body">
+          {{-- Liens de triage --}}
+          @includeIf('includes.sort')
+
+          <div class="section-body mt-5">
 
             <h2 class="section-title">{{ $heading }}</h2>
             <div class="row">
