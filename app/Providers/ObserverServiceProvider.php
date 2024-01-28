@@ -5,8 +5,12 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use App\Models\{
     Photo,
+    Vote,
 };
-use App\Observers\PhotoObserver;
+use App\Observers\{
+    PhotoObserver,
+    VoteObserver,
+};
 
 class ObserverServiceProvider extends ServiceProvider
 {
@@ -25,5 +29,6 @@ class ObserverServiceProvider extends ServiceProvider
     {
         //
         Photo::observe(PhotoObserver::class);
+        Vote::observe(VoteObserver::class);
     }
 }
