@@ -31,7 +31,7 @@
             <a href="#" class="nav-link sidebar-gone-show" data-toggle="sidebar"><i class="fas fa-bars"></i></a>
         </div>
 
-        {{-- <div class="nav-collapse">
+        <div class="nav-collapse">
             <a class="sidebar-gone-show nav-collapse-toggle nav-link" href="#">
                 <i class="fas fa-ellipsis-v"></i>
             </a>
@@ -44,6 +44,8 @@
                 @endforeach
             </ul>
         </div>
+        
+
         <form class="form-inline ml-auto" action="{{ route('search') }}" method="get">
 
             <div class="search-element">
@@ -55,9 +57,9 @@
 
             </div>
 
-        </form> --}}
+        </form> 
         @auth
-        <ul class="navbar-nav navbar-right">
+        <ul class="navbar-nav navbar-right ml-3">
             {{--
             <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown" class="nav-link nav-link-lg message-toggle beep"><i class="far fa-envelope"></i></a>
                 <div class="dropdown-menu dropdown-list dropdown-menu-right">
@@ -202,7 +204,8 @@
         @endauth
     </nav>
 
-    {{-- <nav class="navbar navbar-secondary navbar-expand-lg">
+
+    <nav class="navbar navbar-secondary navbar-expand-lg">
         <div class="container">
             <ul class="navbar-nav">
                 @forelse(App\Models\Tag::popular() as $tag)
@@ -214,43 +217,7 @@
                 @endforelse
             </ul>
         </div>
-    </nav> --}}
-
-      <nav class="navbar navbar-secondary navbar-expand-lg">
-        <div class="container">
-          <ul class="navbar-nav">
-            <li class="nav-item dropdown">
-              <a href="#" data-toggle="dropdown" class="nav-link has-dropdown"><i class="fas fa-fire"></i><span>Dashboard</span></a>
-              <ul class="dropdown-menu">
-                <li class="nav-item"><a href="index-0.html" class="nav-link">General Dashboard</a></li>
-                <li class="nav-item"><a href="index.html" class="nav-link">Ecommerce Dashboard</a></li>
-              </ul>
-            </li>
-            <li class="nav-item active">
-              <a href="#" class="nav-link"><i class="far fa-heart"></i><span>Top Navigation</span></a>
-            </li>
-            <li class="nav-item dropdown">
-              <a href="#" data-toggle="dropdown" class="nav-link has-dropdown"><i class="far fa-clone"></i><span>Multiple Dropdown</span></a>
-              <ul class="dropdown-menu">
-                <li class="nav-item"><a href="#" class="nav-link">Not Dropdown Link</a></li>
-                <li class="nav-item dropdown"><a href="#" class="nav-link has-dropdown">Hover Me</a>
-                  <ul class="dropdown-menu">
-                    <li class="nav-item"><a href="#" class="nav-link">Link</a></li>
-                    <li class="nav-item dropdown"><a href="#" class="nav-link has-dropdown">Link 2</a>
-                      <ul class="dropdown-menu">
-                        <li class="nav-item"><a href="#" class="nav-link">Link</a></li>
-                        <li class="nav-item"><a href="#" class="nav-link">Link</a></li>
-                        <li class="nav-item"><a href="#" class="nav-link">Link</a></li>
-                      </ul>
-                    </li>
-                    <li class="nav-item"><a href="#" class="nav-link">Link 3</a></li>
-                  </ul>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-      </nav>
+    </nav>
 
       @yield('content')
 

@@ -13,20 +13,26 @@ class Category extends Model
 
     protected $guarded = [];
 
-    public function getRouteKeyName() {
+    public function scopePopular($query)
+    {
+        return $query->withCount('albums')->orderByDesc('albums_count')->take(3)->get();
+    }
+
+    public function getRouteKeyName()
+    {
         return 'slug';
     }
 
-    public function getSlugOptions() : SlugOptions {
+    public function getSlugOptions(): SlugOptions
+    {
         return SlugOptions::create()
             ->generateSlugsFrom('name')
             ->saveSlugsTo('slug')
             ->doNotGenerateSlugsOnUpdate();
     }
 
-
-    public function albums() {
+    public function albums()
+    {
         return $this->belongsToMany(Album::class)->withTimestamps();
     }
-
 }

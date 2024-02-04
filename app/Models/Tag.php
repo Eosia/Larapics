@@ -13,23 +13,31 @@ class Tag extends Model
 
     protected $guarded = [];
 
-    public function getRouteKeyName() {
+    public function scopePopular($query)
+    {
+        return $query->withCount('photos')->orderByDesc('photos_count')->take(5)->get();
+    }
+
+    public function getRouteKeyName()
+    {
         return 'slug';
     }
 
-    public function getSlugOptions() : SlugOptions {
+    public function getSlugOptions(): SlugOptions
+    {
         return SlugOptions::create()
             ->generateSlugsFrom('name')
             ->saveSlugsTo('slug')
             ->doNotGenerateSlugsOnUpdate();
     }
 
-    public function albums() {
+    public function albums()
+    {
         return $this->morphedByMany(Album::class, 'taggable');
     }
 
-    public function photos() {
+    public function photos()
+    {
         return $this->morphedByMany(Photo::class, 'taggable');
     }
-
 }

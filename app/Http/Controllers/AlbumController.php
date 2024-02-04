@@ -39,6 +39,7 @@ class AlbumController extends Controller
             'albums' => $albums,
             'heading' => $description,
         ];
+        return view('album.index', $data);
     }
 
     /**

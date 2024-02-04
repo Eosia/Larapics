@@ -10,6 +10,7 @@ use App\Http\Controllers\{
     UserController,
     TagController,
     CategoryController,
+    SearchController
 };
 use App\Models\Album;
 
@@ -31,6 +32,8 @@ Route::get('user/{user}', [UserController::class, 'photos'])->name('user.photos'
 Route::get('tag/{tag}', [TagController::class, 'photos'])->name('tag.photos');
 
 Route::get('category/{category}', [CategoryController::class, 'photos'])->name('category.photos');
+
+Route::get('q', [SearchController::class, 'search'])->name('search');
 
 Route::resource('albums', AlbumController::class);
 
