@@ -73,14 +73,14 @@
                               <a href="{{ route('albums.edit', [$album->slug]) }}"><i class="fas fa-edit btn btn-warning" style="font-size: 1.5rem;"></i></a>
 
                               &nbsp;
-{{-- 
+
                               <form style="display: inline;" action="{{ route('albums.destroy', [$album->slug]) }}" method="post" class="destroy">
                                   @csrf
                                   @method('DELETE')
                                   <button class="btn btn-danger" type="submit">
                                       <i class="far fa-trash-alt" style="color: #fff;"></i>
                                   </button>
-                              </form> --}}
+                              </form>
 
                           </div>
 
