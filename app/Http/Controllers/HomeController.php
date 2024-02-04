@@ -21,9 +21,25 @@ class HomeController extends Controller
 
         $currentPage = request()->query('page', 1);
 
-        $photos = Cache::rememberForever('photos'.$currentPage, function() {
-            return Photo::with('album.user')->orderByDesc('created_at')->paginate();
-        });
+        $sort = request()->query('sort', null);
+
+        switch ($sort) {
+            case 'newest' :
+                $photos = Photo::with('album.user.photos')->orderByDesc('created_at')->paginate();
+                break;
+            case 'oldest' :
+                $photos = Photo::with('album.user.photos')->orderBy('created_at')->paginate();
+                break;
+
+            default:
+                $photos = Photo::with('album.user.photos')->orderByDesc('created_at')->paginate();
+                break;
+
+        }
+
+        // $photos = Cache::rememberForever('photos'.$currentPage, function() {
+        //     return Photo::with('album.user')->orderByDesc('created_at')->paginate();
+        // });
 
         // dd($photos);
 
