@@ -42,6 +42,10 @@ class Photo extends Model
         return $this->hasMany(Source::class);
     }
 
+    public function downloads() {
+        return $this->hasMany(Download::class);
+    }
+
     public function tags() {
         return $this->morphToMany(Tag::class, 'taggable')->withTimestamps();
     }

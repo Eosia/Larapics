@@ -6,10 +6,12 @@ use Illuminate\Support\ServiceProvider;
 use App\Models\{
     Photo,
     Vote,
+    Download,
 };
 use App\Observers\{
     PhotoObserver,
     VoteObserver,
+    DownloadObserver,
 };
 
 class ObserverServiceProvider extends ServiceProvider
@@ -30,5 +32,6 @@ class ObserverServiceProvider extends ServiceProvider
         //
         Photo::observe(PhotoObserver::class);
         Vote::observe(VoteObserver::class);
+        Download::observe(DownloadObserver::class);
     }
 }

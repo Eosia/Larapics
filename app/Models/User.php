@@ -63,6 +63,10 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Album::class);
     }
 
+    public function downloads() {
+        return $this->hasMany(Download::class);
+    }
+
     public function photos() {
         return $this->hasManyThrough(Photo::class, Album::class);
     }
