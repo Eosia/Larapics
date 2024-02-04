@@ -57,7 +57,6 @@ class AlbumController extends Controller
      */
     public function store(AlbumRequest $request)
     {
-        //
         DB::beginTransaction();
 
         try {
@@ -84,17 +83,16 @@ class AlbumController extends Controller
                 $tag = Tag::firstOrCreate(['name' => trim($t)]);
                 $album->tags()->attach($tag->id);
             }
-
-            //dd($categories);
         } catch (ValidationException $e) {
             DB::rollBack();
             dd($e->getErrors());
         }
 
+
         DB::commit();
 
         $success = 'Album ajouté.';
-        $redirect  = route('photos.create', [$album->slug]);
+        $redirect = route('photos.create', [$album->slug]);
         return $request->ajax()
             ? response()->json(['success' => $success, 'redirect' => $redirect])
             : redirect($redirect)->withSuccess($success);
@@ -118,6 +116,7 @@ class AlbumController extends Controller
         $data = [
             'title' => $album->title . ' - ' . config('app.name'),
             'description' => $album->photos->count() . ' photo(s) dans l\'album ' . $album->title,
+            'desc' => $album->description,
             'heading' => $album->title,
             'photos' => $photos,
         ];
@@ -195,37 +194,6 @@ class AlbumController extends Controller
         $redirect = route('albums.edit', [$album->slug]);
         return $request->ajax() ?
             response()->json(['success' => $success, 'redirect' => $redirect])
-            : redirect($redirect)->withSuccess($success);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Album $album)
-    {
-        //
-        abort_if(auth()->id() !== $album->user_id, 403);
-
-        DB::beginTransaction();
-
-        try {
-            DB::afterCommit(function () use ($album) {
-                Storage::deleteDirectory('photos/' . $album->id);
-                Cache::flush();
-            });
-
-            $album->delete();
-        } catch (ValidationException $e) {
-            DB::rollBack();
-            dd($e->getErrors());
-        }
-
-        DB::commit();
-
-        $success = 'Album supprimé.';
-        $redirect = route('albums.index');
-        return request()->ajax()
-            ? response()->json(['success' => $success, 'redirect' => $redirect])
             : redirect($redirect)->withSuccess($success);
     }
 }
