@@ -17,41 +17,48 @@ class Photo extends Model
 
     protected $perPage = 9;
 
-    protected static function booted() {
-        static::addGlobalScope('active', function(Builder $builder) {
+    protected static function booted()
+    {
+        static::addGlobalScope('active', function (Builder $builder) {
             $builder->where('active', true);
         });
     }
 
-    public function getRouteKeyName() {
+    public function getRouteKeyName()
+    {
         return 'slug';
     }
 
-    public function getSlugOptions() : SlugOptions {
+    public function getSlugOptions(): SlugOptions
+    {
         return SlugOptions::create()
             ->generateSlugsFrom('title')
             ->saveSlugsTo('slug')
             ->doNotGenerateSlugsOnUpdate();
     }
 
-    public function album() {
+    public function album()
+    {
         return $this->belongsTo(Album::class);
     }
 
-    public function sources() {
+    public function sources()
+    {
         return $this->hasMany(Source::class);
     }
 
-    public function downloads() {
+    public function downloads()
+    {
         return $this->hasMany(Download::class);
     }
 
-    public function tags() {
+    public function tags()
+    {
         return $this->morphToMany(Tag::class, 'taggable')->withTimestamps();
     }
 
-    public function votes() {
+    public function votes()
+    {
         return $this->hasMany(Vote::class);
     }
-
-}    
+}

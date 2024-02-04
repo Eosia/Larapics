@@ -15,31 +15,36 @@ class Album extends Model
 
     protected $perPage = 9;
 
-    public function getRouteKeyName() {
+    public function getRouteKeyName()
+    {
         return 'slug';
     }
 
-    public function getSlugOptions() : SlugOptions {
+    public function getSlugOptions(): SlugOptions
+    {
         return SlugOptions::create()
             ->generateSlugsFrom('title')
             ->saveSlugsTo('slug')
             ->doNotGenerateSlugsOnUpdate();
     }
 
-    public function categories() {
+    public function categories()
+    {
         return $this->belongsToMany(Category::class)->withTimestamps();
     }
 
-    public function user() {
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function photos() {
+    public function photos()
+    {
         return $this->hasMany(Photo::class);
     }
 
-    public function tags() {
+    public function tags()
+    {
         return $this->morphToMany(Tag::class, 'taggable')->withTimestamps();
     }
-
 }

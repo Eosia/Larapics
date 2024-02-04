@@ -8,7 +8,7 @@
             <div class="section-header">
                 <h1>{{ $heading }} - Catégories :
                     @foreach($categories as $category)
-                        <a href="#">{{ strtolower($category->name) }}</a>
+                        <a href="{{ route('category.photos', [$category->slug]) }}">{{ strtolower($category->name) }}</a>
                     @endforeach
                 </h1>
 
@@ -21,7 +21,7 @@
                     <br/><br/>
                     Tags:
                     @foreach($tags as $tag)
-                        <a href="#">{{ strtolower($tag->name) }}</a>
+                        <a href="{{ route('tag.photos', [$tag->slug]) }}">{{ strtolower($tag->name) }}</a>
                     @endforeach
                 </h2>
 
